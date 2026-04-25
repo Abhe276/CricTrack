@@ -18,11 +18,11 @@ class Database:
         if self.connection:
             self.connection.close()
             
-    def RegisterUser(self, username, password):          # Hash the password using scrpyt.
+    def RegisterUser(self, username, password):          # Hash the password using scrypt
         hashed = generate_password_hash(password)
         try:
             conn = self.GetDB()
-            conn.execute("INSERT INTO USERS (username, password) VALUES (?, ?)", (username, hashed))
+            conn.execute("INSERT INTO Users (username, password) VALUES (?, ?)", (username, hashed))
             conn.commit()
             return True
         except sqlite3.IntegrityError:
@@ -34,7 +34,7 @@ class Database:
     def CheckLogin(self, username, password):            # Finds the user in the database and checks if the password is correct
         try:
             conn = self.GetDB()
-            user = conn.execute("SELECT * FROM USERS WHERE username = ?", (username,)).fetchone()
+            user = conn.execute("SELECT * FROM Users WHERE username = ?", (username,)).fetchone()
             if user is None: 
                 return None
             if check_password_hash(user['password'], password):
@@ -62,11 +62,11 @@ class Batting:
         # Links batting records to the user and returns all batting records for that user
         try:
             conn = self.db.GetDB()
-            rows = conn.execute("SELECT Batting.*, Users.username FROM Batting JOIN Users ON Batting.user_id = Users.id WHERE user_id = ? ORDER BY Batting.date DESC", (user_id,)).fetchall()
+            rows = conn.execute("SELECT Batting.*, Users.username FROM Batting JOIN Users ON Batting.user_id = Users.id WHERE Batting.user_id = ? ORDER BY Batting.date DESC", (user_id,)).fetchall()
             return rows
         finally:
             self.db.CloseDB()
-    def GetOneBatting(self, record_id, user_id)
+    def GetOneBatting(self, record_id, user_id):
         # Retrieves a single batting record based on the user ID and record ID verifiers ownership
         try:
             conn = self.db.GetDB()
@@ -106,12 +106,12 @@ class Batting:
             total_balls = sum(row["balls"] for row in rows)
             dismissals = sum(1 for row in rows if row["not_out"] == 0)
             highest = max(row["runs"] for row in rows) 
-            batting_ave = round(total_runs/dismissals, 2) if dismissals>0 else total_runs
+            batting_avg = round(total_runs/dismissals, 2) if dismissals>0 else total_runs
             strike_rate = round((total_runs/total_balls)*100, 2) if total_balls>0 else 0
             return {
                 "innings": len(rows),
                 "total_runs": total_runs,
-                "batting_ave": batting_ave,
+                "batting_avg": batting_avg,
                 "strike_rate": strike_rate, 
                 "highest": highest,
             }
@@ -142,7 +142,7 @@ class BowlingFigures:
         finally:
             self.db.CloseDB()   
 
-    def GetOneBowling(self, user_id, record_id):
+    def GetOneBowling(self, record_id, user_id):
         # Retrieves a single bowling record based on the user ID and record ID verifiers ownership
         try:
             conn = self.db.GetDB()
@@ -182,12 +182,12 @@ class BowlingFigures:
             total_wickets = sum(row["wickets"] for row in rows)
             total_runs_given = sum(row["runs_given"] for row in rows)
             total_overs = sum(row["overs"] for row in rows)
-            bowling_ave = round(total_runs_given/total_wickets, 2) if total_wickets>0 else "N/A"
+            bowling_avg = round(total_runs_given/total_wickets, 2) if total_wickets>0 else "N/A"
             economy = round(total_runs_given/total_overs, 2) if total_overs>0 else 0
             return {
                 "matches": len(rows),
                 "total_wickets": total_wickets,
-                "bowling_ave": bowling_ave,
+                "bowling_avg": bowling_avg,
                 "economy": economy,
             }   
         finally:
@@ -217,7 +217,7 @@ class FieldingStats:
         finally:
             self.db.CloseDB()
 
-    def GetOneFielding(self, user_id, record_id):         
+    def GetOneFielding(self, record_id, user_id):         
         # Retrieves a single fielding record based on the user ID and record ID verifiers ownership
         try:
             conn = self.db.GetDB()
