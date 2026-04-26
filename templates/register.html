@@ -1,0 +1,27 @@
+{%extends "base.html" %}
+{% block title %} - Register{% endblock %}
+
+{% block content %}
+<div class="form-wrapper">
+    <h2>Create an Account</h2>
+
+     <!-- Show error message if registration fails -->
+     {% if error %}
+    <div class="error-message">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('register') }}">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required autocomplete="username">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required autocomplete="new-password">
+        </div>
+        <button type="submit" class="btn-primary">Register</button>
+    </form>
+    <p class="form-link">Already have an account? <a href="{{ url_for('login') }}">Login here</a>.</p>
+</div>
+{% endblock %}
+
