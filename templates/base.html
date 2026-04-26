@@ -28,7 +28,7 @@
         <div class="nav-inner">
             <a href="{{ url_for('index') }}"
               class="{% if request.endpoint == 'index' %}active{% endif %}">Home</a>
-            {% if session.get('user_id') %}
+            {% if session.get('id') %}
                 <!--If the user is logged in then show History, Stats and Logout-->
                 <a href="{{ url_for('history') }}"
                   class="{% if request.endpoint == 'history' %}active{% endif %}">History</a>
