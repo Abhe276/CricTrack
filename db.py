@@ -18,7 +18,7 @@ class Database:
         if self.connection:
             self.connection.close()
             
-    def RegisterUser(self, username, password):          # Hash the password using scrypt
+    def RegisterUser(self, username, password):          # Hash the password using scrypt generate_password_hash makes this possible 
         hashed = generate_password_hash(password)
         try:
             conn = self.GetDB()
@@ -26,7 +26,7 @@ class Database:
             conn.commit()
             return True
         except sqlite3.IntegrityError:
-            return False                           # Username already exists - unique usermame
+            return False                           # Username already exists - unique usermame sqlite3.IntergrityError makes this possible 
         finally:
             self.CloseDB()
 
