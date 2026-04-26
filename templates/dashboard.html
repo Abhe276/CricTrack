@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %} - My Stats{% endblock %}
+
+{% block content %}
+<div class="dashboard-wrapper">
+    <h2>My Stats</h2>
+<!-- Batting stats -->
+
+    <section class="stats-section">
+        <h3>Batting</h3>
+        {% if batting_stats %}
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">{{ batting_stats['innings'] }}</div>
+                <div class="stat-label">Innings</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ batting_stats['total_runs'] }}</div>
+                <div class="stat-label">Total Runs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ batting_stats['batting_avg'] }}</div>
+                <div class="stat-label">Average</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ batting_stats['strike_rate'] }}</div>
+                <div class="stat-label">Strike Rate</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ batting_stats['highest'] }}</div>
+                <div class="stat-label">High Score</div>
+            </div>
+        </div>
+        {% else %}
+        <p class="empty-msg">No batting records yet. <a href="{{ url_for('add_batting') }}">Log one now.</a></p>
+        {% endif %}
+    </section>
+<!-- Bowling stats -->
+
+
+    <section class="stats-section">
+        <h3>Bowling</h3>
+        {% if bowling_stats %}
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">{{ bowling_stats['matches'] }}</div>
+                <div class="stat-label">Spells</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ bowling_stats['total_wickets'] }}</div>
+                <div class="stat-label">Wickets</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ bowling_stats['bowling_avg'] }}</div>
+                <div class="stat-label">Average</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ bowling_stats['economy'] }}</div>
+                <div class="stat-label">Economy</div>
+            </div>
+        </div>
+        {% else %}
+        <p class="empty-msg">No bowling records yet. <a href="{{ url_for('add_bowling') }}">Log one now.</a></p>
+        {% endif %}
+    </section>
+<!-- Fielding stats -->
+ 
+    <section class="stats-section">
+        <h3>Fielding</h3>
+        {% if fielding_stats %}
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">{{ fielding_stats['matches'] }}</div>
+                <div class="stat-label">Matches</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ fielding_stats['total_catches'] }}</div>
+                <div class="stat-label">Catches</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ fielding_stats['total_run_outs'] }}</div>
+                <div class="stat-label">Run Outs</div>
+            </div>
+        </div>
+        {% else %}
+        <p class="empty-msg">No fielding records yet. <a href="{{ url_for('add_fielding') }}">Log one now.</a></p>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}

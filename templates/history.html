@@ -1,0 +1,123 @@
+{% extends "base.html" % }
+{% block title %} - Match History{% endblock %}
+
+{% block content %}
+<div class="history-wrapper">
+    <h2>My Match History</h2>
+
+    <!-- Batting record table -->
+     <section class="history-section">
+        <h3>Batting</h3>
+        {% if batting %}
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Format</th>
+                        <th>Runs</th>
+                        <th>Balls</th>
+                        <th>N/O</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in batting %}
+                    <tr>
+                        <td>{{ row['date'] }}</td>
+                        <td>{{ row['format'] }}</td>
+                        <td>{{ row['runs'] }}</td>
+                        <td>{{ row['balls'] }}</td>
+                        <td>{{ '✓' if row['not_out'] else '✗' }}</td>
+                        <td class="action-cell">
+                            <a href="{{ url_for('edit_batting', record_id=row['id']) }}" class="link-edit">Edit</a>
+                            <a href="{{ url_for('delete_batting', record_id=row['id']) }}" class="link-delete" 
+                                onclick="return confirm('Delete this batting record?');">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}  
+        <p class="no-records">No batting records found. <a href="{{ url_for('add_batting') }}">Add one</a></p>
+        {% endif %}
+    </section>
+
+
+
+    <!-- Bowling record table -->
+     <section class="history-section">
+        <h3>Bowling</h3>
+        {% if bowling %}
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Format</th>
+                        <th>Overs</th>
+                        <th>Runs Given</th>
+                        <th>Wickets</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in bowling %}
+                    <tr>
+                        <td>{{ row['date'] }}</td>
+                        <td>{{ row['format'] }}</td>
+                        <td>{{ row['overs'] }}</td>
+                        <td>{{ row['runs_given'] }}</td>
+                        <td>{{ row['wickets'] }}</td>
+                        <td class="action-cell">
+                            <a href="{{ url_for('edit_bowling', record_id=row['id']) }}" class="link-edit">Edit</a>
+                            <a href="{{ url_for('delete_bowling', record_id=row['id']) }}" class="link-delete" 
+                                onclick="return confirm('Delete this bowling record?');">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}  
+        <p class="no-records">No bowling records found. <a href="{{ url_for('add_bowling') }}">Add one</a></p>
+        {% endif %}
+    </section>
+
+    <!-- Fielding record table -->
+     <section class="history-section">
+        <h3>Fielding</h3>
+        {% if fielding %}
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Catches</th>
+                        <th>Run Outs</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in fielding %}
+                    <tr>
+                        <td>{{ row['date'] }}</td>
+                        <td>{{ row['catches'] }}</td>
+                        <td>{{ row['run_outs'] }}</td>
+                        <td class="action-cell">
+                            <a href="{{ url_for('edit_fielding', record_id=row['id']) }}" class="link-edit">Edit</a>
+                            <a href="{{ url_for('delete_fielding', record_id=row['id']) }}" class="link-delete" 
+                                onclick="return confirm('Delete this fielding record?');">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}    
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="no-records">No fielding records found. <a href="{{ url_for('add_fielding') }}">Add one</a></p>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}

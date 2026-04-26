@@ -148,7 +148,7 @@ def history():
     
     uid = session["id"]
     db = Database(DB_PATH)
-    batting = Batting(db) .GetAllBatting(uid)
+    batting = Batting(db).GetAllBatting(uid)
     db = Database(DB_PATH)
     bowling = BowlingFigures(db).GetAllBowling(uid)
     db = Database(DB_PATH)
