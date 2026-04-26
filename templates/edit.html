@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %} - Edit Record{% endblock %}
+
+{% block content %}
+<div class="form-wrapper">
+    <h2>Edit Record</h2>
+    <p class="subtitle">Editing: {{ record_type | capitalize }} — {{ record['date'] }}</p>
+
+    {% if error %}
+        <div class="error-message">{{ error }}</div>
+    {% endif %}
+
+
+    <!-- Show different forms based on the type of record being edited -->
+
+    {% if record_type == 'batting' %}
+    <form method="POST" action="{{ url_for('edit_batting', record_id=record['id']) }}">
+        <div class="form-row">
+            <div class="form-group">
+                <label>Date</label>
+                <input type="date" name="date" value="{{ record['date'] }}" required>
+            </div>
+            <div class="form-group">
+                <label>Format</label>
+                <select name="format" required>
+                    <option value="Test" {% if record['format']=='Test' %}selected{% endif %}>Test</option>
+                    <option value="ODI" {% if record['format']=='ODI' %}selected{% endif %}>ODI</option>
+                    <option value="T20" {% if record['format']=='T20' %}selected{% endif %}>T20</option>
+                </select>
+            </div>
+        </div>
+<!-- Batting-specific fields -->
+        <div class="form-row">
+            <div class="form-group">
+                <label>Runs</label>
+                <input type="number" name="runs" value="{{ record['runs'] }}" min="0" max="400" required>
+            </div>
+            <div class="form-group">
+                <label>Balls Faced</label>
+                <input type="number" name="balls" value="{{ record['balls'] }}" min="0" max="300" required>
+            </div>
+        </div>
+
+        <div class="form-row not-out-row">
+            <label>
+                <input type="checkbox" name="not_out" value="1"
+                {% if record['not_out'] %}checked{% endif %}> Not Out
+            </label>
+        </div>
+
+        <button type="submit" class="btn-primary submit-btn">Save Changes</button>
+    </form>
+
+<!-- Similar forms for bowling and fielding records -->
+
+    {% elif record_type == 'bowling' %}
+    <form method="POST" action="{{ url_for('edit_bowling', record_id=record['id']) }}">
+        <div class="form-row">
+            <div class="form-group">
+                <label>Date</label>
+                <input type="date" name="date" value="{{ record['date'] }}" required>
+            </div>
+            <div class="form-group">
+                <label>Format</label>
+                <select name="format" required>
+                    <option value="Test" {% if record['format']=='Test' %}selected{% endif %}>Test</option>
+                    <option value="ODI" {% if record['format']=='ODI' %}selected{% endif %}>ODI</option>
+                    <option value="T20" {% if record['format']=='T20' %}selected{% endif %}>T20</option>
+                </select>
+            </div>
+        </div>
+<!-- Bowling-specific fields -->
+        <div class="form-row">
+            <div class="form-group">
+                <label>Overs</label>
+                <input type="number" name="overs" value="{{ record['overs'] }}" min="0" max="50" step="0.1" required>
+            </div>
+            <div class="form-group">
+                <label>Runs Given</label>
+                <input type="number" name="runs_given" value="{{ record['runs_given'] }}" min="0" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Wickets</label>
+            <input type="number" name="wickets" value="{{ record['wickets'] }}" min="0" max="10" required>
+        </div>
+
+        <button type="submit" class="btn-primary submit-btn">Save Changes</button>
+    </form>
+
+    {% elif record_type == 'fielding' %}
+    <form method="POST" action="{{ url_for('edit_fielding', record_id=record['id']) }}">
+        <div class="form-group">
+            <label>Date</label>
+            <input type="date" name="date" value="{{ record['date'] }}" required>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Catches</label>
+                <input type="number" name="catches" value="{{ record['catches'] }}" min="0" max="10" required>
+            </div>
+            <div class="form-group">
+                <label>Run Outs</label>
+                <input type="number" name="run_outs" value="{{ record['run_outs'] }}" min="0" max="10" required>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-primary submit-btn">Save Changes</button>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}
