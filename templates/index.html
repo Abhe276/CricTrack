@@ -3,11 +3,11 @@
 
 {% block content %}
 
-{% if session.get('user_id') %}
+{% if session.get('id') %}
 <!-- If the user is logged in -->
 <div class="welcome">
     <h1>Welcome back, {{ session.get('username') }}!</h1>
-    <p class ="subtite">What would you like to log today?</p>
+    <p class ="subtitle">What would you like to log today?</p>
 
     <div class="action-links">
         <a href="{{ url_for('add_batting') }}" class="action-card">
